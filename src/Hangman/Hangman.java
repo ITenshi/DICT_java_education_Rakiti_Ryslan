@@ -23,6 +23,9 @@ public class Hangman {
         // Кількість спроб
         int attemptsLeft = 8;
 
+        // Множина вже введених літер
+        StringBuilder guessedLetters = new StringBuilder();
+
         // Гра
         while (attemptsLeft > 0) {
             System.out.println(currentWordState);
@@ -33,24 +36,32 @@ public class Hangman {
             Scanner scanner = new Scanner(System.in);
             String userLetter = scanner.nextLine();
 
-            // Перевірка, чи введена літера з'являється в слові
-            boolean letterGuessed = false;
-            for (int i = 0; i < targetWord.length(); i++) {
-                if (userLetter.equalsIgnoreCase(String.valueOf(targetWord.charAt(i)))) {
-                    currentWordState.setCharAt(i, targetWord.charAt(i));
-                    letterGuessed = true;
+            // Перевірка, чи буква була введена раніше
+            if (guessedLetters.toString().contains(userLetter)) {
+                System.out.println("No improvements");
+            } else {
+                guessedLetters.append(userLetter);
+
+                // Перевірка, чи введена літера з'являється в слові
+                boolean letterGuessed = false;
+                for (int i = 0; i < targetWord.length(); i++) {
+                    if (userLetter.equalsIgnoreCase(String.valueOf(targetWord.charAt(i)))) {
+                        currentWordState.setCharAt(i, targetWord.charAt(i));
+                        letterGuessed = true;
+                    }
+                }
+
+                // Зменшення кількості спроб, якщо літера не вгадана
+                if (!letterGuessed) {
+                    attemptsLeft--;
+                    System.out.println("That letter doesn't appear in the word");
                 }
             }
 
-            // Зменшення кількості спроб, якщо літера не вгадана
-            if (!letterGuessed) {
-                attemptsLeft--;
-                System.out.println("That letter doesn't appear in the word");
-            }
-
             // Перевірка, чи слово повністю вгадано
-            if (currentWordState.toString().equalsIgnoreCase(targetWord)) {
+            if (currentWordState.toString().equalsIgnoreCase(targetWord) && attemptsLeft > 0) {
                 System.out.println(currentWordState);
+                System.out.println("You guessed the word!");
                 System.out.println("You survived!");
                 break;
             }
