@@ -14,23 +14,52 @@ public class Hangman {
         Random random = new Random();
         String targetWord = words[random.nextInt(words.length)];
 
-        // Підказка для гравця
-        StringBuilder hint = new StringBuilder(targetWord.substring(0, 2));
-        for (int i = 2; i < targetWord.length(); i++) {
-            hint.append("-");
+        // Стан слова, яке гравець повинен вгадати
+        StringBuilder currentWordState = new StringBuilder();
+        for (int i = 0; i < targetWord.length(); i++) {
+            currentWordState.append("-");
         }
 
-        System.out.println("Guess the word " + hint + ": ");
+        // Кількість спроб
+        int attemptsLeft = 8;
 
-        // Отримання введення від користувача
-        Scanner scanner = new Scanner(System.in);
-        String userGuess = scanner.nextLine();
+        // Гра
+        while (attemptsLeft > 0) {
+            System.out.println(currentWordState);
+            System.out.println("Attempts left: " + attemptsLeft);
+            System.out.print("Input a letter: ");
 
-        // Перевірка введеного слова
-        if (userGuess.equalsIgnoreCase(targetWord)) {
-            System.out.println("You survived!");
-        } else {
-            System.out.println("You lost!");
+            // Отримання введення від користувача
+            Scanner scanner = new Scanner(System.in);
+            String userLetter = scanner.nextLine();
+
+            // Перевірка, чи введена літера з'являється в слові
+            boolean letterGuessed = false;
+            for (int i = 0; i < targetWord.length(); i++) {
+                if (userLetter.equalsIgnoreCase(String.valueOf(targetWord.charAt(i)))) {
+                    currentWordState.setCharAt(i, targetWord.charAt(i));
+                    letterGuessed = true;
+                }
+            }
+
+            // Зменшення кількості спроб, якщо літера не вгадана
+            if (!letterGuessed) {
+                attemptsLeft--;
+                System.out.println("That letter doesn't appear in the word");
+            }
+
+            // Перевірка, чи слово повністю вгадано
+            if (currentWordState.toString().equalsIgnoreCase(targetWord)) {
+                System.out.println(currentWordState);
+                System.out.println("You survived!");
+                break;
+            }
+        }
+
+        // Виведення результату гри
+        if (attemptsLeft == 0) {
+            System.out.println("Thanks for playing!");
+            System.out.println("We'll see how well you did in the next stage");
         }
     }
 }
