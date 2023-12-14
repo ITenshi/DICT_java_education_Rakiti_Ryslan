@@ -7,6 +7,25 @@ public class Hangman {
     public static void main(String[] args) {
         System.out.println("HANGMAN");
 
+        // Меню
+        while (true) {
+            System.out.println("Type \"play\" to play the game, \"exit\" to quit: ");
+            Scanner menuScanner = new Scanner(System.in);
+            String menuChoice = menuScanner.nextLine().toLowerCase();
+
+            if (menuChoice.equals("exit")) {
+                System.out.println("Goodbye!");
+                break;
+            } else if (menuChoice.equals("play")) {
+                playGame();
+            } else {
+                System.out.println("Invalid choice. Please type \"play\" to play the game or \"exit\" to quit.");
+            }
+        }
+    }
+
+    // Логіка гри
+    private static void playGame() {
         // Список слів
         String[] words = {"python", "java", "javascript", "kotlin"};
 
