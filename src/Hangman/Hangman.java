@@ -14,7 +14,13 @@ public class Hangman {
         Random random = new Random();
         String targetWord = words[random.nextInt(words.length)];
 
-        System.out.println("Guess the word: ");
+        // Підказка для гравця
+        StringBuilder hint = new StringBuilder(targetWord.substring(0, 2));
+        for (int i = 2; i < targetWord.length(); i++) {
+            hint.append("-");
+        }
+
+        System.out.println("Guess the word " + hint + ": ");
 
         // Отримання введення від користувача
         Scanner scanner = new Scanner(System.in);
