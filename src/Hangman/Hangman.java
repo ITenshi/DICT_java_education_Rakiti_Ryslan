@@ -36,9 +36,15 @@ public class Hangman {
             Scanner scanner = new Scanner(System.in);
             String userLetter = scanner.nextLine();
 
+            // Перевірка, чи введена літера - маленька англійська буква та що введено рівно одна літера
+            if (!userLetter.matches("[a-z]") || userLetter.length() != 1) {
+                System.out.println("Please enter a lowercase English letter");
+                continue;
+            }
+
             // Перевірка, чи буква була введена раніше
             if (guessedLetters.toString().contains(userLetter)) {
-                System.out.println("No improvements");
+                System.out.println("You've already guessed this letter");
             } else {
                 guessedLetters.append(userLetter);
 
@@ -61,7 +67,7 @@ public class Hangman {
             // Перевірка, чи слово повністю вгадано
             if (currentWordState.toString().equalsIgnoreCase(targetWord) && attemptsLeft > 0) {
                 System.out.println(currentWordState);
-                System.out.println("You guessed the word!");
+                System.out.println("You guessed the word " + targetWord + "!");
                 System.out.println("You survived!");
                 break;
             }
